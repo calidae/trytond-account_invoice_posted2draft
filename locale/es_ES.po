@@ -1,0 +1,7 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:account.invoice:"
+msgid "You cannot cancel an invoice with number."
+msgstr "No puede cancelar una factura con número asignado."

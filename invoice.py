@@ -23,11 +23,15 @@ class Invoice:
                     | ((Eval('state') == 'cancel') & Eval('cancel_move'))),
                     },
                 })
+        cls._error_messages.update({
+                'cancel_invoice_with_number': ('You cannot cancel an invoice '
+                    'with number.'),
+                })
 
     @classmethod
     @ModelView.button
     @Workflow.transition('draft')
-    def draft(self, invoices):
+    def draft(cls, invoices):
         Move = Pool().get('account.move')
 
         moves = []
@@ -36,4 +40,14 @@ class Invoice:
                 moves.append(invoice.move)
         if moves:
             Move.draft(moves)
-        super(Invoice, self).draft(invoices)
+        return super(Invoice, cls).draft(invoices)
+
+    @classmethod
+    @Workflow.transition('cancel')
+    def cancel(cls, invoices):
+        for invoice in invoices:
+            if (invoice.type in ('out_invoice', 'out_credit_note') and
+                    invoice.number):
+                cls.raise_user_error('cancel_invoice_with_number')
+
+        return super(Invoice, cls).cancel(invoices)
