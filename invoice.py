@@ -40,6 +40,10 @@ class Invoice:
                 moves.append(invoice.move)
         if moves:
             Move.draft(moves)
+        cls.write(invoices, {
+            'invoice_report_format': None,
+            'invoice_report_cache': None,
+            })
         return super(Invoice, cls).draft(invoices)
 
     @classmethod
