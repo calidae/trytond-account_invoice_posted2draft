@@ -63,8 +63,7 @@ class Invoice:
     @Workflow.transition('cancel')
     def cancel(cls, invoices):
         for invoice in invoices:
-            if (invoice.type in ('out_invoice', 'out_credit_note') and
-                    invoice.number):
+            if invoice.type == 'out' and invoice.number:
                 cls.raise_user_error('cancel_invoice_with_number')
 
         return super(Invoice, cls).cancel(invoices)
