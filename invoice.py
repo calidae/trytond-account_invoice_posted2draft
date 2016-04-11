@@ -21,7 +21,7 @@ class Invoice:
         cls._buttons.update({
                 'draft': {
                     'invisible': (Eval('state').in_(['draft', 'paid'])
-                    | ((Eval('state') == 'cancel') & Eval('cancel_move'))),
+                        | ((Eval('state') == 'cancel') & Eval('cancel_move'))),
                     },
                 })
         cls._error_messages.update({
