@@ -1,6 +1,5 @@
 include INSTALL
 include README
-include TODO
 include COPYRIGHT
 include CHANGELOG
 include LICENSE
@@ -8,3 +7,4 @@ include tryton.cfg
 include *.xml
 include locale/*.po
 include doc/*
+include test/*.rst
