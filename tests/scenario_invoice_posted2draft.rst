@@ -106,8 +106,9 @@ Create invoice::
     >>> invoice.click('post')
     >>> invoice.number
     u'1'
-    >>> party.receivable
-    Decimal('200')
+    >>> receivable.reload()
+    >>> receivable.debit
+    Decimal('200.00')
 
 Move it back to draft::
 
@@ -115,9 +116,9 @@ Move it back to draft::
     >>> invoice.number
     u'1'
     >>> invoice.invoice_report_cache
-    >>> party.reload()
-    >>> party.receivable
-    Decimal('0.0')
+    >>> receivable.reload()
+    >>> receivable.debit
+    Decimal('0.00')
 
 Out invoices can not canel it once posted::
 
