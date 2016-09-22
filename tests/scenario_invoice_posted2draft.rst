@@ -74,15 +74,6 @@ Create payment term::
     >>> payment_term = create_payment_term()
     >>> payment_term.save()
 
-Allow to cancel moves in revenue journal::
-
-    >>> Journal = Model.get('account.journal')
-    >>> journal_revenue, = Journal.find([
-    ...         ('code', '=', 'REV'),
-    ...         ])
-    >>> journal_revenue.update_posted = True
-    >>> journal_revenue.save()
-
 Create invoice::
 
     >>> Invoice = Model.get('account.invoice')
@@ -118,3 +109,13 @@ Out invoices can not canel it once posted::
     Traceback (most recent call last):
         ...
     UserError: ('UserError', ('You cannot cancel an invoice with number.', ''))
+
+Invoices can not be set to draft if period is closed::
+
+    >>> invoice.click('post')
+    >>> close_period = Wizard('account.period.close', [invoice.move.period])
+    >>> invoice.click('draft')  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    UserError: ...
+

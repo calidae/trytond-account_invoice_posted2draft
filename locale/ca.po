@@ -1,6 +1,14 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:account.invoice:"
+msgid ""
+"You can not set to draft invoice \"%(invoice)s\" because period "
+"\"%(period)s\" is closed."
+msgstr ""
+"No es pot passar a esborrany la factura \"%(invoice)s\" perquè el període "
+"\"%(period)s\" està tancat."
 
 msgctxt "error:account.invoice:"
 msgid "You cannot cancel an invoice with number."

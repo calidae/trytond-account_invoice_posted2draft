@@ -5,8 +5,9 @@ from trytond.model import Workflow, ModelView
 from trytond.pyson import Eval
 from trytond.pool import Pool, PoolMeta
 from trytond.tools import grouped_slice
+from trytond.transaction import Transaction
 
-__all__ = ['Invoice']
+__all__ = ['Invoice', 'Move']
 
 
 class Invoice:
@@ -25,6 +26,8 @@ class Invoice:
                     },
                 })
         cls._error_messages.update({
+                'draft_closed_period': ('You can not set to draft invoice '
+                    '"%(invoice)s" because period "%(period)s" is closed.'),
                 'cancel_invoice_with_number': ('You cannot cancel an invoice '
                     'with number.'),
                 })
@@ -47,10 +50,16 @@ class Invoice:
         lines = []
         for invoice in invoices:
             if invoice.move:
+                if invoice.move.period.state == 'close':
+                    cls.raise_user_error('draft_closed_period', {
+                            'invoice': invoice.rec_name,
+                            'period': invoice.move.period.rec_name,
+                            })
                 moves.append(invoice.move)
                 lines.extend([l.id for l in invoice.move.lines])
         if moves:
-            Move.draft(moves)
+            with Transaction().set_context(draft_invoices=True):
+                Move.write(moves, {'state': 'draft'})
         if Payment:
             payments = Payment.search([
                     ('line', 'in', lines),
@@ -79,3 +88,14 @@ class Invoice:
                 cls.raise_user_error('cancel_invoice_with_number')
 
         return super(Invoice, cls).cancel(invoices)
+
+
+class Move:
+    __metaclass__ = PoolMeta
+    __name__ = 'account.move'
+
+    @classmethod
+    def check_modify(cls, *args, **kwargs):
+        if Transaction().context.get('draft_invoices', False):
+            return
+        return super(Move, cls).check_modify(*args, **kwargs)
