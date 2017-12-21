@@ -105,17 +105,16 @@ Move it back to draft::
 
 Out invoices can not canel it once posted::
 
-    >>> invoice.click('cancel')
-    Traceback (most recent call last):
-        ...
-    UserError: ('UserError', ('You cannot cancel an invoice with number.', ''))
-
-Invoices can not be set to draft if period is closed::
-
-    >>> invoice.click('post')
-    >>> close_period = Wizard('account.period.close', [invoice.move.period])
-    >>> invoice.click('draft')  # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> invoice.click('cancel')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
         ...
     UserError: ...
 
+Invoices can not be set to draft if period is closed::
+
+    >>> invoice.click('post')
+    >>> invoice.move.period.click('close')
+    >>> invoice.click('draft')  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    UserError: ...
