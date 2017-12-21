@@ -57,7 +57,7 @@ if minor_version % 2:
     dependency_links.append('https://trydevpi.tryton.org/')
 
 setup(name='%s_%s' % (PREFIX, MODULE),
-    version=info.get('version', '0.0.1'),
+    version=version,
     description='Tryton Account Invoice Posted2Draft Module',
     long_description=read('README'),
     author='TrytonSpain',
