@@ -95,7 +95,7 @@ Create invoice::
     Decimal('200.00')
     >>> invoice.click('post')
     >>> invoice.number
-    u'1'
+    '1'
     >>> receivable.reload()
     >>> receivable.debit
     Decimal('200.00')
@@ -104,7 +104,7 @@ Move it back to draft::
 
     >>> invoice.click('draft')
     >>> invoice.number
-    u'1'
+    '1'
     >>> invoice.invoice_report_cache
     >>> receivable.reload()
     >>> receivable.debit
