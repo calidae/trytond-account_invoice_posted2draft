@@ -5,6 +5,8 @@ from trytond.model import Workflow
 from trytond.pyson import Eval
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
+from trytond.i18n import gettext
+from trytond.exceptions import UserError
 
 __all__ = ['Invoice', 'Move']
 
@@ -23,12 +25,6 @@ class Invoice(metaclass=PoolMeta):
                         | ((Eval('state') == 'cancel') & Eval('cancel_move'))),
                     },
                 })
-        cls._error_messages.update({
-                'draft_closed_period': ('You can not set to draft invoice '
-                    '"%(invoice)s" because period "%(period)s" is closed.'),
-                'cancel_invoice_with_number': ('You cannot cancel an invoice '
-                    'with number.'),
-                })
 
     @classmethod
     def draft(cls, invoices):
@@ -38,10 +34,11 @@ class Invoice(metaclass=PoolMeta):
         for invoice in invoices:
             if invoice.move:
                 if invoice.move.period.state == 'close':
-                    cls.raise_user_error('draft_closed_period', {
-                            'invoice': invoice.rec_name,
-                            'period': invoice.move.period.rec_name,
-                            })
+                    raise UserError(gettext(
+                        'account_invoice_posted2draft.draft_closed_period',
+                            invoice=invoice.rec_name,
+                            period=invoice.move.period.rec_name,
+                            ))
                 moves.append(invoice.move)
         if moves:
             with Transaction().set_context(draft_invoices=True):
@@ -57,7 +54,8 @@ class Invoice(metaclass=PoolMeta):
     def cancel(cls, invoices):
         for invoice in invoices:
             if invoice.type == 'out' and invoice.number:
-                cls.raise_user_error('cancel_invoice_with_number')
+                raise UserError(gettext(
+                    'account_invoice_posted2draft.cancel_invoice_with_number'))
 
         return super(Invoice, cls).cancel(invoices)
 
