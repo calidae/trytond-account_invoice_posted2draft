@@ -112,7 +112,10 @@ Move it back to draft::
 
 Out invoices can not canel it once posted::
 
-    >>> invoice.click('cancel')
+    >>> invoice.click('cancel')  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    UserError: ...
 
 Invoices can not be set to draft if period is closed::
 

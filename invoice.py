@@ -50,7 +50,7 @@ class Invoice(metaclass=PoolMeta):
         return super(Invoice, cls).draft(invoices)
 
     @classmethod
-    @Workflow.transition('cancel')
+    @Workflow.transition('cancelled')
     def cancel(cls, invoices):
         for invoice in invoices:
             if invoice.type == 'out' and invoice.number:
