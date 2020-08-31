@@ -22,7 +22,7 @@ class Invoice(metaclass=PoolMeta):
         cls._buttons.update({
                 'draft': {
                     'invisible': (Eval('state').in_(['draft', 'paid'])
-                        | ((Eval('state') == 'cancel') & Eval('cancel_move'))),
+                        | ((Eval('state') == 'cancelled') & Eval('cancel_move'))),
                     },
                 })
 
