@@ -18,7 +18,7 @@ Imports::
     ...     set_fiscalyear_invoice_sequences, create_payment_term
     >>> today = datetime.date.today()
 
-Install account_invoice::
+Install account_invoice_posted2draft::
 
     >>> config = activate_modules('account_invoice_posted2draft')
 
@@ -112,10 +112,7 @@ Move it back to draft::
 
 Out invoices can not canel it once posted::
 
-    >>> invoice.click('cancel')  # doctest: +IGNORE_EXCEPTION_DETAIL
-    Traceback (most recent call last):
-        ...
-    UserError: ...
+    >>> invoice.click('cancel')
 
 Invoices can not be set to draft if period is closed::
 
