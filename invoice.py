@@ -32,7 +32,7 @@ class Invoice(metaclass=PoolMeta):
         for invoice in invoices:
             if invoice.move:
                 # check period is closed
-                if invoice.move.period.state == 'close':
+                if invoice.move.period.state == 'closed':
                     raise UserError(gettext(
                         'account_invoice_posted2draft.msg_draft_closed_period',
                             invoice=invoice.rec_name,
@@ -45,7 +45,7 @@ class Invoice(metaclass=PoolMeta):
                         ], limit=1)
                 if journal_periods:
                     journal_period, = journal_periods
-                    if journal_period.state == 'close':
+                    if journal_period.state == 'closed':
                         raise UserError(gettext(
                             'account_invoice_posted2draft.'
                                 'msg_modify_closed_journal_period',
