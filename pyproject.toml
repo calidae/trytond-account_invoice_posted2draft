@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trytonspain-account_invoice_posted2draft"
+dependencies = [
+    "trytond-account_invoice~=6.8.0",
+]
+version = "6.8"
+
+dynamic = ["classifiers", "license", "readme", "description"]
+
+[project.entry-points."trytond.modules"]
+account_invoice_posted2draft = "trytond.modules.account_invoice_posted2draft"
+
+[project.scripts]
+[project.gui-scripts]
