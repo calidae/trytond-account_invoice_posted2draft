@@ -15,6 +15,8 @@ class Invoice(metaclass=PoolMeta):
     def __setup__(cls):
         super(Invoice, cls).__setup__()
         cls._check_modify_exclude.add('move')
+        cls._check_modify_exclude.add('validated_by')
+        cls._check_modify_exclude.add('posted_by')
         cls._transitions |= set((('posted', 'draft'),))
         cls._buttons['draft']['invisible'] = (
             Eval('state').in_(['draft', 'paid']) | (
