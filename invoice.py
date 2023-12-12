@@ -55,38 +55,8 @@ class Invoice(metaclass=PoolMeta):
         to_draft = []
         to_save = []
         for invoice in invoices:
-<<<<<<< HEAD
-            if invoice.move:
-                # check period is closed
-                if invoice.move.period.state == 'closed':
-                    raise UserError(gettext(
-                        'account_invoice_posted2draft.msg_draft_closed_period',
-                            invoice=invoice.rec_name,
-                            period=invoice.move.period.rec_name,
-                            ))
-                # check period and journal is closed
-                journal_periods = JournalPeriod.search([
-                        ('journal', '=', invoice.move.journal.id),
-                        ('period', '=', invoice.move.period.id),
-                        ], limit=1)
-                if journal_periods:
-                    journal_period, = journal_periods
-                    if journal_period.state == 'closed':
-                        raise UserError(gettext(
-                            'account_invoice_posted2draft.'
-                                'msg_modify_closed_journal_period',
-                                invoice=invoice.rec_name,
-                                journal_period=journal_period.rec_name))
-                moves.append(invoice.move)
-            if invoice.payment_lines:
-                for payment_line in invoice.payment_lines:
-                    if payment_line.move and payment_line.move.lines:
-                        for lines in payment_line.move.lines:
-                            payment_lines.append(lines)
-=======
             if not invoice.allow_draft:
                 continue
->>>>>>> 13a65d8 (#047268 (#5))
 
             move = invoice.move
             if move:
